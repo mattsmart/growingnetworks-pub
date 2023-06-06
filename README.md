@@ -1,1 +1,1 @@
-# growing-networks-pub
+# growingnetworks-pub
