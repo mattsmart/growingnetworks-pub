@@ -161,3 +161,5 @@ cython_debug/
 notebooks/runs
 notebooks/vis_cellgraph
 runs
+notebooks/output
+notebooks/sweep
