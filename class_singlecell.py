@@ -146,19 +146,19 @@ if __name__ == '__main__':
     style_ode = 'PWL3_swap'  # PWL3_zstepdecay, PWL3_swap, toy_clock
     sc = SingleCell(label='c1', style_ode=style_ode)
     if style_ode in ['PWL2', 'PWL3', 'PWL3_swap']:
-        sc.params_ode['a1'] = 8
-        sc.params_ode['a2'] = 2
+        sc.params_ode['a1'] = 1
+        sc.params_ode['a2'] = 0.25
         sc.params_ode['gamma'] = 1e-2
         sc.params_ode['epsilon'] = 1e-2  # try 1e-6
-        sc.params_ode['pulse_vel'] = 0.0 #0.08  # 0 for constant z
+        sc.params_ode['pulse_vel'] = 0.0 #0.01  # 0 for constant z
         sc.params_ode['t_pulse_switch'] = 82.0  #75.0
     if style_ode in ['PWL4_auto_linear']:
         sc.params_ode['a1'] = 2
         sc.params_ode['a2'] = 1
     if style_ode in ['PWL3_zstepdecay']:
         sc.params_ode['epsilon'] = 1e-2
-        sc.params_ode['a1'] = 8
-        sc.params_ode['a2'] = 2
+        sc.params_ode['a1'] = 1
+        sc.params_ode['a2'] = 0.25
         sc.params_ode['gamma'] = 1e-2
         sc.params_ode['dz_stretch'] = 0.0
         sc.params_ode['dz_eta'] = 0.01
@@ -275,9 +275,9 @@ if __name__ == '__main__':
     if scan_count_ndiv_fn_of_v:
         assert style_ode == 'PWL3_swap'
         velocities = np.concatenate((
-            np.linspace(0, 0.0528, 50),
-            np.linspace(0.0528, 0.06, 10),
-            np.linspace(0.06, 0.24, 160)  #np.linspace(0.06, 0.25, 150)
+            np.linspace(0/8.0, 0.0528/8.0, 50),
+            np.linspace(0.0528/8.0, 0.06/8.0, 10),
+            np.linspace(0.06/8.0, 0.24/8.0, 160)  #np.linspace(0.06, 0.25, 150)
         ))
         num_divisions = [0] * len(velocities)
         heuristic_fullcycles = [0] * len(velocities)

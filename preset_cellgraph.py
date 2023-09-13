@@ -51,11 +51,11 @@ PRESET_CELLGRAPH['waterbear_fig4'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
-        pulse_vel=0.036,
+        pulse_vel=0.036/8.0,
         t_pulse_switch=150,
     )
 )
@@ -74,11 +74,11 @@ PRESET_CELLGRAPH['waterbear_fig4_alt'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
-        pulse_vel=0.064,
+        pulse_vel=0.064/8.0,
         t_pulse_switch=82,
     )
 )
@@ -97,11 +97,11 @@ PRESET_CELLGRAPH['argentine_ant'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
-        pulse_vel=0.0408,
+        pulse_vel=0.0408/8.0,
         t_pulse_switch=150,
     )
 )
@@ -120,11 +120,11 @@ PRESET_CELLGRAPH['drosophila_5quarter_pint'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
-        pulse_vel=0.06608,
+        pulse_vel=0.06608/8.0,
         t_pulse_switch=82,
     )
 )
@@ -144,11 +144,11 @@ PRESET_CELLGRAPH['drosophila_3quarter_pint'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
-        pulse_vel=0.0832,
+        pulse_vel=0.0832/8.0,
         t_pulse_switch=82,
     )
 )
@@ -167,11 +167,11 @@ PRESET_CELLGRAPH['drosophila_oneshort'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
-        pulse_vel=0.0824,
+        pulse_vel=0.0824/8.0,
         t_pulse_switch=82,
     )
 )
@@ -190,11 +190,11 @@ PRESET_CELLGRAPH['nasonia_vitripennis'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
-        pulse_vel=0.06128, #0.0613,  #0.06128
+        pulse_vel=0.06128/8.0,
         t_pulse_switch=82,
     )
 )
@@ -213,11 +213,11 @@ PRESET_CELLGRAPH['almost_bee_A'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
-        pulse_vel=0.02865823,
+        pulse_vel=0.02865823/8.0,
         t_pulse_switch=175.0,
     )
 )
@@ -236,11 +236,11 @@ PRESET_CELLGRAPH['lacewing1'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
-        pulse_vel=0.09,
+        pulse_vel=0.09/8.0,
         t_pulse_switch=175.0,
     )
 )
@@ -263,11 +263,11 @@ PRESET_CELLGRAPH['lacewing2'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
-        pulse_vel=0.044,
+        pulse_vel=0.044/8.0,
         t_pulse_switch=175.0,
     )
 )
@@ -286,11 +286,11 @@ PRESET_CELLGRAPH['lacewing_R3'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
-        pulse_vel=0.0584,
+        pulse_vel=0.0584/8.0,
         t_pulse_switch=82.0,
     )
 )
@@ -315,8 +315,8 @@ PRESET_CELLGRAPH['PWL3_zstepdecay_default'] = dict(
         timeintervalrun=1.0,
         verbosity=0,
         mods_params_ode=dict(
-            a1=8,
-            a2=2,
+            a1=1,
+            a2=0.25,
             epsilon=0.01,
             gamma=0.01,
             dz_stretch=6.0,
@@ -340,8 +340,8 @@ PRESET_CELLGRAPH['PWL3_zdecay_default'] = dict(
         timeintervalrun=1.0,
         verbosity=0,
         mods_params_ode=dict(
-            a1=8,
-            a2=2,
+            a1=1,
+            a2=0.25,
             epsilon=0.01,
             gamma=0.01,
             dz_stretch=0.0,
@@ -365,8 +365,8 @@ PRESET_CELLGRAPH['waterbear_fig4_zstepdecay_search1'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
         dz_stretch=6.1,
@@ -385,7 +385,6 @@ PRESET_CELLGRAPH['waterbear_fig4_zstepdecay_search3']['mods_params_ode']['dz_str
 """
 Below: search for 4star or 4line for PWL3_swap and PWL3_zstepdecay
 """
-# for pulse_vel 0.03, alpha=-0.2 is 7star; alpha=-0.3 is 5star; alpha=-0.4 is 4star
 PRESET_CELLGRAPH['4star_fig4'] = dict(
     num_cells=1,
     style_ode='PWL3_swap',
@@ -401,11 +400,11 @@ PRESET_CELLGRAPH['4star_fig4'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
-        pulse_vel=0.03,
+        pulse_vel=0.03/8.0,
         t_pulse_switch=150,
     )
 )
@@ -425,11 +424,11 @@ PRESET_CELLGRAPH['4line_fig4'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
-        pulse_vel=0.03,
+        pulse_vel=0.03/8.0,
         t_pulse_switch=150,
     )
 )
@@ -449,8 +448,8 @@ PRESET_CELLGRAPH['4star_fig4_zstepdecay_variantA'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
         dz_stretch=8.5,
@@ -474,8 +473,8 @@ PRESET_CELLGRAPH['4star_fig4_zstepdecay_search'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
         dz_stretch=7.5,
@@ -499,8 +498,8 @@ PRESET_CELLGRAPH['4line_fig4_zstepdecay_search'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
         dz_stretch=8,  # 5.4 gives 2cell; 5.5 gives 3cell, 6.0 gives 3cell with high diffusion but 11 with c=0,
@@ -530,8 +529,8 @@ PRESET_CELLGRAPH['13cell_bilinear_chain'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
         dz_stretch=8,  # 5.4 gives 2cell; 5.5 gives 3cell, 6.0 gives 3cell with high diffusion but 11 with c=0,
@@ -562,8 +561,8 @@ PRESET_CELLGRAPH['Kstar_zstepdecay_unlimited_divisions'] = dict(
     state_history=np.array([[0, 0, 0]]).T,
     verbosity=0,
     mods_params_ode=dict(
-        a1=8,
-        a2=2,
+        a1=1,
+        a2=0.25,
         epsilon=0.01,
         gamma=0.01,
         dz_stretch=6.0,

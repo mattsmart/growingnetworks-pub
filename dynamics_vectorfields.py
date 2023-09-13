@@ -165,15 +165,16 @@ def set_ode_params(style_ode):
     elif style_ode == 'PWL3_swap':
         p = {
             'epsilon': 1e-2,        # speed scale for fast variable Cyc_act
-            'a1': 8,                # defines the corners of PWL function for x
-            'a2': 2,                # defines the corners of PWL function for x
+            'a1': 1.0,              # defines the corners of PWL function for x -- this must be 1.0 to enforce normalization in paper
+            'a2': 0.25,             # defines the corners of PWL function for x -- this is "a" in the paper
             'gamma': 1e-2,          # degradation of Cyc_tot
-            'pulse_vel': 0.2,       # rate of inhibitor accumulation
+            'pulse_vel': 0.2,       # rate of inhibitor accumulation            -- -- this is "v" in the paper
             't_pulse_switch': 25.0  # treating inhibitor timeseries as pulse with a negative slope from t=T to t=2T
         }
         assert 0 < p['epsilon'] < 1
         assert 0 < p['gamma']
         assert 0 <= p['pulse_vel']
+        assert p['a1'] == 1.0
     elif style_ode == 'PWL3_zstepdecay':
         p = {
             'epsilon': 1e-2,         # speed scale for fast variable Cyc_act

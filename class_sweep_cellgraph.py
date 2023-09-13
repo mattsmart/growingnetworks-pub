@@ -209,6 +209,10 @@ class SweepCellGraph():
             modified_cellgraph_kwargs['mods_params_ode'] = mods_params_ode
             modified_cellgraph = create_cellgraph(**modified_cellgraph_kwargs)
 
+            # enforce normalization used in the paper
+            if modified_cellgraph.sc_template.style_ode == 'PWL3_swap':
+                assert modified_cellgraph.sc_template.params_ode['a1'] == 1.0
+
             # 3) Perform the run
             output_results = self.basic_run(modified_cellgraph,
                                             save_cellgraph_files=save_cellgraph_files,

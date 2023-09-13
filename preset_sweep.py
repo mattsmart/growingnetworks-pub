@@ -51,7 +51,7 @@ PRESET_SWEEP['2d_vel_t_pulse_switch_copy'] = dict(
 		't_pulse_switch'
 	],
 	params_values=[
-		np.linspace(0.01, 0.3, 21),
+		np.linspace(0.01/8.0, 0.3/8.0, 21),
 		np.linspace(1, 200, 21)
 	],
 	params_variety=[
@@ -69,7 +69,7 @@ PRESET_SWEEP['1d_vel_copy'] = dict(
 		'pulse_vel'
 	],
 	params_values=[
-		np.linspace(0.0, 0.050, 80)
+		np.linspace(0.0, 0.050/8.0, 80)
 	],
 	params_variety=[
 		'sc_ode'
@@ -149,7 +149,7 @@ PRESET_SWEEP['2d_pulse_vel_diffusion'] = dict(
 		'diffusion_arg'
 	],
 	params_values=[
-		np.linspace(0.02, 0.15, 80),
+		np.linspace(0.02/8.0, 0.15/8.0, 80),
 		np.linspace(0.00, 8.5, 200)
 	],
 	params_variety=[
@@ -169,7 +169,7 @@ PRESET_SWEEP['2d_pulse_vel_diffusion'] = dict(
 """
 PRESET_SWEEP['2d_pulse_vel_diffusion_beehunt_A'] = copy.deepcopy(PRESET_SWEEP['2d_pulse_vel_diffusion'])
 PRESET_SWEEP['2d_pulse_vel_diffusion_beehunt_A']['params_values'] = [
-	np.linspace(0.028, 0.032, 40),  # pulse vel (zoomed)
+	np.linspace(0.028/8.0, 0.032/8.0, 40),  # pulse vel (zoomed)
 	np.linspace(0.000, 1.000, 40)   # diffusion (zoomed)
 ]
 
@@ -188,7 +188,7 @@ PRESET_SWEEP['2d_pulse_vel_alpha_sharing_ndiv_bam'] = dict(
 		'alpha_sharing'
 	],
 	params_values=[
-		np.linspace(0.0380, 0.0384, 5),
+		np.linspace(0.0380/8.0, 0.0384/8.0, 5),
 		np.linspace(0.0135, 0.0145, 10)
 	],
 	params_variety=[
@@ -218,7 +218,7 @@ PRESET_SWEEP['3d_pulse_vel_diffusion_alpha_sharing_ndiv_bam'] = dict(
 		'alpha_sharing'
 	],
 	params_values=[
-		np.linspace(0.01, 0.20, 20),
+		np.linspace(0.01/8.0, 0.20/8.0, 20),
 		np.linspace(0.01, 40, 40),
 		np.linspace(-0.10, 0.10, 6)
 	],
@@ -332,7 +332,7 @@ PRESET_SWEEP['3d_pulse_vel_diffusion_alpha_testing'] = dict(
 		'alpha_sharing'
 	],
 	params_values=[
-		np.linspace(0.02, 0.15, 2),
+		np.linspace(0.02/8.0, 0.15/8.0, 2),
 		np.linspace(0.00, 8.5, 2),
 		np.linspace(0.01, 0.02, 3)
 	],
@@ -354,7 +354,7 @@ PRESET_SWEEP['2d_pulse_vel_duration_testing'] = dict(
 		't_pulse_switch'
 	],
 	params_values=[
-		np.linspace(0.12, 0.15, 4),
+		np.linspace(0.12/8.0, 0.15/8.0, 4),
 		np.linspace(150, 200, 3)
 	],
 	params_variety=[

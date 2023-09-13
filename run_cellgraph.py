@@ -149,7 +149,7 @@ if __name__ == '__main__':
             verbosity=verbosity)
         if cellgraph.style_ode in ['PWL2', 'PWL3', 'PWL3_swap']:
             cellgraph.sc_template.params_ode['epsilon'] = 1e-2
-            cellgraph.sc_template.params_ode['pulse_vel'] = 0.2
+            cellgraph.sc_template.params_ode['pulse_vel'] = 0.025
 
         # Add some cells through manual divisions (two different modes - linear or random) to augment initialization
         for idx in range(add_init_cells):
@@ -168,6 +168,9 @@ if __name__ == '__main__':
         solver_kwargs['max_step'] = np.Inf   # for testing, try 1e-1 or 1e-2
         solver_kwargs['atol'] = 1e-8
         solver_kwargs['rtol'] = 1e-4
+
+    if cellgraph.sc_template.style_ode == 'PWL3_swap':
+        assert cellgraph.sc_template.params_ode['a1'] == 1.0  # normalization used in the paper
 
     # Write initial CellGraph info to file
     cellgraph.print_state(msg='initialized in run_cellgraph.py main')
