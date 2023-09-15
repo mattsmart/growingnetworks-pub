@@ -1,4 +1,4 @@
-function [evolutionary_graph, relabeled_image] = plot_network_cube_simplified_linear_updated(file_name_isos, append_linear)
+function [evolutionary_graph, relabeled_image, adjacency_mat] = plot_network_cube_simplified_linear_updated(chosen_region_label, append_linear)
 % Basic explanation:
 % This code takes the matrix from the sweep and converts it into an
 % adjacency matrix (see evolutionary_graph).
@@ -8,15 +8,10 @@ function [evolutionary_graph, relabeled_image] = plot_network_cube_simplified_li
 % contact each other in parameter space.
 
 % inputs:
-% 1. file_name_isos is the filename of the npy file containing the iso matrix
-% from the sweep. 
-% (Each element of the 3D matrix contains either an integer indicating isomorphism 
-% to a known graph or 0 if not isomorphic to known graph)
-% legend:
-% see cell_array_names below -- also, see preset_bionetworks.py
-
-% 2. append_linear
+% 1. append_linear
 % if append_linear == true, then combine 6-cell linear to 16-cell linear into one label.
+
+% see cell_array_names below -- also, see preset_bionetworks.py for isos
 
 % outputs: 
 % evolutionary_graph: adjacency matrix representation of the the iso matrix from the sweep
@@ -70,8 +65,28 @@ color_array_for_above_names(25,:) = [0.4940, 0.1840, 0.556]; %
 color_array_for_above_names(26,:) = [255, 192, 203] / 255; %
 color_array_for_above_names(27,:) = [211, 211, 211] / 255; % 
 
-% load cube. 
+
+%% read these in without taking as input -- make sure data are stored in appropriately name folder.
+
+% check that appropriate folder exists
+folder_with_big_sweep = '../input/archive_sweeps/3D/big_100x160x181_beta0_zpulse_divPlusMinus/';
+assert(exist(folder_with_big_sweep) == 7);
+
+unique_ID_filename = [folder_with_big_sweep, 'unique_net_id.npy'];
+assert(exist(unique_ID_filename) == 2);
+
+num_cell_filename = [folder_with_big_sweep, 'num_cells.npy'];
+assert(exist(num_cell_filename) == 2);
+
+file_name_isos = [folder_with_big_sweep, 'isos.npy'];
+assert(exist(num_cell_filename) == 2);
+
+npy_state_tensor_unique_ID = readNPY(unique_ID_filename);
+npy_state_tensor_num_cells = readNPY(num_cell_filename);
 npy_state_tensor_isos = readNPY(file_name_isos);
+
+assert(isequal(size(npy_state_tensor_unique_ID), size(npy_state_tensor_num_cells)));
+
 % assert size of npy_state_tensor_isos be the size of sweep used to produce Fig. 4
 % size(npy_state_tensor_isos) == [100   160   181]
 assert(isequal(size(npy_state_tensor_isos), [100   160   181]));
@@ -96,6 +111,7 @@ evolutionary_graph = graph;
 % See manuscript for sweep grid (stored in X, Y, Z)
 % size(npy_state_tensor_isos) == [100   160   181]
 % Here the XYZ grid is converted to real parameter values in a hard-coded manner.
+% NOTE: divide v by 8 -- check this.
 [X, Y, Z] = meshgrid(1:size(npy_state_tensor_isos, 2), 1:size(npy_state_tensor_isos, 1), 1:size(npy_state_tensor_isos, 3));
 Xorig = X;
 Yorig = Y;
@@ -105,6 +121,7 @@ X = X * 8.0/159;
 Y = Y - 1;
 Y = Y * (0.14-0.045)/99;
 Y = Y + 0.045;
+Y = Y / 8; % normalize v
 Z = Z - 1;
 Z = Z * 0.001;
 Z = Z - 0.09;
@@ -184,6 +201,7 @@ for label_number = 2:size(cell_array_names,2)
                 % within a region producing the corresponding network.
                 % code to ensure that the calculated representative point
                 % falls within the region -- these are hard coded
+                % the counters tell you which distinct region of that ISO was used in the figure
                 if (counter == 4 && label_number == 6)
                     mean_val_pos = round([mean(Xorig(voxID)), mean(Yorig(voxID)), mean(Zorig(voxID))]);
                     assert(npy_state_tensor_isos(mean_val_pos(2), mean_val_pos(1), mean_val_pos(3)) == 6);
@@ -284,54 +302,50 @@ assert(region_counter-1 == numnodes(evolutionary_graph));
 
 %%
 
-% check that region numbers correspond well to nodes of graph
-all_pairs_val = [];
+adjacency_mat = zeros(numnodes(evolutionary_graph));
+
 for i = 1:numnodes(evolutionary_graph)
-    for j = (i+1):numnodes(evolutionary_graph)
-        all_pairs_val = vertcat(all_pairs_val,[i, j]);
-    end
-end
 
-connection_bool = zeros(length(all_pairs_val),1);
-edgeweight_vect = zeros(length(all_pairs_val),1);
+    this_region_counter = evolutionary_graph.Nodes.RegionLabel(i);
+    assert(i == this_region_counter);
+    B_edited_image = zeros(size(relabeled_image));
+    stats1 = regionprops3(relabeled_image==this_region_counter,"VoxelIdxList");
+    voxID1 = stats1.VoxelIdxList{1,1};
+    [I1,I2,I3] = ind2sub(size(relabeled_image),voxID1);
 
-for i = 1:size(all_pairs_val,1)
+    for j = 1:length(voxID1)
+        ind1 = I1(j);
+        ind2 = I2(j);
+        ind3 = I3(j);
 
-    stats = regionprops3(relabeled_image==all_pairs_val(i,1) | relabeled_image==all_pairs_val(i,2),"Volume");
-
-    if (length(stats.Volume) == 1) % regions are contiguous
-        stats1 = regionprops3(relabeled_image==all_pairs_val(i,1),"VoxelIdxList");
-        voxID1 = stats1.VoxelIdxList{1,1};
-        [I1,I2,I3] = ind2sub(size(relabeled_image),voxID1);
-
-        contact_counter = 1;
-        for j = 1:length(voxID1)
-            % go back check boundary
-            % check that these are not limits of the box
-            ind1 = I1(j);
-            ind2 = I2(j);
-            ind3 = I3(j);
-            assert(relabeled_image(ind1, ind2, ind3) == all_pairs_val(i,1));
-
-            if (ind1-1 > 0 && ind1+1 <= size(relabeled_image,1) && ind2-1 > 0 && ind2+1 <= size(relabeled_image,2) && ind3-1 > 0 && ind3+1 <= size(relabeled_image,3))
-                neighbors = relabeled_image((ind1-1):(ind1+1), (ind2-1):(ind2+1), (ind3-1):(ind3+1));
-                neighbors = neighbors(:);
-                assert(neighbors(14) == all_pairs_val(i,1));
-                neighbors(14) = [];
-
-                if (~isempty(find(neighbors == all_pairs_val(i,2))))
-                    contact_counter = contact_counter + 1;
+        for ind1check = (ind1-1):(ind1+1)
+            for ind2check = (ind2-1):(ind2+1)
+                for ind3check = (ind3-1):(ind3+1)
+                    if (ind1check > 0 && ind1check <= size(relabeled_image,1) && ind2check > 0 && ind2check <= size(relabeled_image,2) && ind3check > 0 && ind3check <= size(relabeled_image,3))
+                        B_edited_image(ind1check, ind2check, ind3check) = 1;
+                    end
                 end
             end
-
         end
 
-        edgeweight_vect(i) = contact_counter;
-        connection_bool(i) = 1;
     end
-    if (mod(i,500) == 0)
-        disp(i);
+
+    unique_neighbors = unique(relabeled_image(find(B_edited_image(:) == 1)));
+    unique_neighbors(find(unique_neighbors == 0)) = [];
+
+    for j = 1:length(unique_neighbors)
+
+        this_neighbor = unique_neighbors(j);
+
+        edge_weight_calc = length(find(B_edited_image(:) == 1 & relabeled_image(:) == this_neighbor));
+
+        if (i ~= this_neighbor)
+            adjacency_mat(i,this_neighbor) = edge_weight_calc;
+        end
+
     end
+    disp(i);
+
 end
 
 for i = 1:numnodes(evolutionary_graph)
@@ -341,12 +355,14 @@ for i = 1:numnodes(evolutionary_graph)
 end
 
 
-for i = 1:length(connection_bool)
+for i = 1:numnodes(evolutionary_graph)
+    for j = i+1:numnodes(evolutionary_graph)
 
-    if (connection_bool(i))
-        evolutionary_graph = addedge(evolutionary_graph, all_pairs_val(i,1), all_pairs_val(i,2), edgeweight_vect(i));
+        if (adjacency_mat(i,j) > 0)
+            evolutionary_graph = addedge(evolutionary_graph, i, j, (adjacency_mat(i,j) + adjacency_mat(j,i))/2);
+        end
+
     end
-
 end
 
 %% sanity check: two distinct regions producing the same network can't be connected
@@ -403,25 +419,82 @@ for j = 1:size(cell_array_names,2)
 
     end
 end
+
 % sum of volumes for all nodes corresponding to a given isomorphism (e.g.,
 % store the sum over all Drosophila node volumes).
 Size_Data2 = zeros(size(Size_Data1));
 for i = 1:numnodes(evolutionary_graph)
-    nodenameval = evolutionary_graph.Nodes.Name{i, 1};
-    for j = 1:size(cell_array_names,2)
-        this_cell_array_name = cell_array_names{1,j};
-        if (length(nodenameval)>=length(this_cell_array_name))
+    this_region_counter = evolutionary_graph.Nodes.RegionLabel(i);
 
-            if (isequal(nodenameval(1:length(this_cell_array_name)),this_cell_array_name))
-                Size_Data2(i) = total_volume_vect(j);
-                assert(Size_Data1(i)<=Size_Data2(i));
-            end
+    associated_unique_ID = unique(npy_state_tensor_isos(find(relabeled_image(:) == this_region_counter)));
+    assert(length(associated_unique_ID) == 1);
 
-        end
-    end
+    Size_Data2(i) = length(find(npy_state_tensor_isos(:) == associated_unique_ID));
 end
 
-tableVal = table(NodeName,Centroid_Array,Size_Data1,Size_Data2);
+unique_ID_vect = zeros(size(Size_Data1));
+for i = 1:numnodes(evolutionary_graph)
+    this_region_counter = evolutionary_graph.Nodes.RegionLabel(i);
+
+    associated_unique_ID = unique(npy_state_tensor_unique_ID(find(relabeled_image(:) == this_region_counter)));
+    assert(length(associated_unique_ID) == 1);
+
+    unique_ID_vect(i) = associated_unique_ID;
+end
+
+num_cells_vect = zeros(size(Size_Data1));
+for i = 1:numnodes(evolutionary_graph)
+    this_region_counter = evolutionary_graph.Nodes.RegionLabel(i);
+
+    associated_num_cells = unique(npy_state_tensor_num_cells(find(relabeled_image(:) == this_region_counter)));
+    assert(length(associated_num_cells) == 1);
+
+    num_cells_vect(i) = associated_num_cells;
+end
+
+% non-natural reported structures
+how_many_to_report = 3;
+[top_contacting, ~, number_of_cells_top_contacting, volume_for_top_contacting, ...
+    centroid_for_top_contacting] = find_non_reported_neighboring_networks(relabeled_image,...
+    chosen_region_label, how_many_to_report, X, Y, Z, Xorig, Yorig, Zorig);
+
+for i = 1:how_many_to_report
+    NodeName = vertcat(NodeName, strcat(string(top_contacting(i)),"_",string(number_of_cells_top_contacting(i)) ) );
+end
+
+for i = 1:how_many_to_report
+    Centroid_Array = vertcat(Centroid_Array, centroid_for_top_contacting(i,:));
+end
+
+% store volume of param space for each node
+for i = 1:how_many_to_report
+    Size_Data1 = vertcat(Size_Data1, volume_for_top_contacting(i));
+end
+
+for i = 1:how_many_to_report
+
+    this_region_counter = top_contacting(i);
+
+    Size_Data2 = vertcat(Size_Data2, length(find(npy_state_tensor_unique_ID(:) == this_region_counter)));
+
+end
+
+for i = 1:how_many_to_report
+
+    this_region_counter = top_contacting(i);
+
+    unique_ID_vect = vertcat(unique_ID_vect,this_region_counter);
+
+end
+
+for i = 1:how_many_to_report
+
+    num_cells_vect = vertcat(num_cells_vect, number_of_cells_top_contacting(i));
+
+end
+
+
+tableVal = table(NodeName,Centroid_Array,Size_Data1,Size_Data2,unique_ID_vect,num_cells_vect);
 
 writetable(tableVal,'Iso_Graph_Node_Info.csv');
 
