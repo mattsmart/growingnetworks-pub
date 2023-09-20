@@ -79,7 +79,9 @@ def graph_ode_system(t_scalar, xvec, single_cell, cellgraph):
         a = cellgraph.sc_dim_ode * cell_idx
         b = cellgraph.sc_dim_ode * (cell_idx + 1)
         xvec_sc = xvec_matrix[:, cell_idx]
-        term_1[a:b] = f_of_x_single_cell(t_scalar, xvec_sc, single_cell)
+
+        single_cell_dxdt_pipeline = f_of_x_single_cell(t_scalar, xvec_sc, single_cell)  # this can be spedup maybe
+        term_1[a:b] = [a[0] for a in single_cell_dxdt_pipeline]
 
     # Term 2: stores the cell-cell coupling which is just laplacian diffusion -c * L * x
     # Note: we consider each reactant separately with own diffusion rate
