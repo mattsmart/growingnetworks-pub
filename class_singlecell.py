@@ -2,7 +2,7 @@ import csv
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-from scipy.integrate import quad, fixed_quad, quadrature
+from scipy.integrate import quad, fixed_quad
 
 # simulate_dynamics_general solves the ode's
 from dynamics_detect_cycles import detect_oscillations_manual_1d
@@ -237,7 +237,7 @@ if __name__ == '__main__':
         # perform integral to get sval (as in Methods)
         def integrand(z):
             return 1 / PWL3swap_heuristic_period(z, m=m)
-        sval = (1 / v) * quadrature(integrand, z1, min(v_tp, z2), maxiter=100)[0]
+        sval = (1 / v) * quad(integrand, z1, min(v_tp, z2), maxiter=100)[0]
 
         if v_tp <= z1:
             n = 0
